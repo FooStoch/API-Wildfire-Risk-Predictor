@@ -7,8 +7,8 @@ from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-st.write("TensorFlow version:", tf.__version__)
-st.write("Keras version:", keras.__version__)
+# st.write("TensorFlow version:", tf.__version__)
+# st.write("Keras version:", keras.__version__)
 
 # Load the trained model and scaler
 model = load_model('wildfire_risk_model.keras')
