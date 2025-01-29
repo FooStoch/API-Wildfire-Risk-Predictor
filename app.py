@@ -11,7 +11,7 @@ import joblib
 # st.write("Keras version:", keras.__version__)
 
 # Load the trained model and scaler
-model = load_model('wildfire_risk_model.keras')
+model = load_model('wildfire_risk_model.keras', compile==False)
 scaler = joblib.load('scaler.pkl')
 
 # Function to get weather and elevation data
