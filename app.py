@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components  # Explicit import
 import tensorflow as tf
 import keras
 import requests
@@ -8,15 +9,15 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 
 # Inject JavaScript to handle localStorage errors
-st.components.html("""
+components.html("""
 <script>
 // Override localStorage to prevent null errors in WebView
 if (!window.localStorage) {
     window.localStorage = {
-        getItem: function(key) { return null; },  // Return null instead of crashing
-        setItem: function(key, value) {},        // No-op
-        removeItem: function(key) {},            // No-op
-        clear: function() {}                     // No-op
+        getItem: function(key) { return null; },
+        setItem: function(key, value) {},
+        removeItem: function(key) {},
+        clear: function() {}
     };
 } else {
     // Wrap getItem in try-catch for safety
@@ -31,10 +32,10 @@ if (!window.localStorage) {
     };
 }
 </script>
-""", height=0)  # height=0 hides the component visually
+""", height=0)
 
 # Load the trained model and scaler
-model = load_model('wildfire_risk_model.keras', compile=False)  # Fixed typo: compile=False
+model = load_model('wildfire_risk_model.keras', compile=False)
 scaler = joblib.load('scaler.pkl')
 
 # Function to get weather and elevation data
@@ -69,17 +70,18 @@ def get_weather_data(lat, lon):
 # Streamlit app layout
 st.title("Wildfire Risk Prediction")
 st.write("Enter latitude and longitude to predict the Forest Fire Index.")
+st.write(f"Streamlit version: {st.__version__}")  # Temporary version check
 
 # Input fields
-lat = st.number_input("Enter Latitude: ", format="%.6f")
-lon = st.number_input("Enter Longitude: ", format="%.6f")
+lat = st.number_input("Enter Latitude:", format="%.6f")
+lon = st.number_input("Enter Longitude:", format="%.6f")
 
 if st.button("Predict"):
     # Get weather data
     weather_data = get_weather_data(lat, lon)
 
     if weather_data:
-        st.write("Weather Data Retrieved: ")
+        st.write("Weather Data Retrieved:")
         st.json(weather_data)
 
         # Prepare inputs for prediction
