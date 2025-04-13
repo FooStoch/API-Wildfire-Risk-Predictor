@@ -7,34 +7,11 @@ from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-# Inject JavaScript to handle localStorage errors
-st.components.html("""
-<script>
-// Override localStorage to prevent null errors in WebView
-if (!window.localStorage) {
-    window.localStorage = {
-        getItem: function(key) { return null; },  // Return null instead of crashing
-        setItem: function(key, value) {},        // No-op
-        removeItem: function(key) {},            // No-op
-        clear: function() {}                     // No-op
-    };
-} else {
-    // Wrap getItem in try-catch for safety
-    var originalGetItem = window.localStorage.getItem;
-    window.localStorage.getItem = function(key) {
-        try {
-            return originalGetItem.call(window.localStorage, key);
-        } catch (e) {
-            console.warn("localStorage.getItem failed:", e);
-            return null;
-        }
-    };
-}
-</script>
-""", height=0)  # height=0 hides the component visually
+# st.write("TensorFlow version:", tf.__version__)
+# st.write("Keras version:", keras.__version__)
 
 # Load the trained model and scaler
-model = load_model('wildfire_risk_model.keras', compile=False)  # Fixed typo: compile=False
+model = load_model('wildfire_risk_model.keras', compile==False)
 scaler = joblib.load('scaler.pkl')
 
 # Function to get weather and elevation data
